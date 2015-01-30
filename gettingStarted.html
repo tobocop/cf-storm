@@ -1,4 +1,3 @@
-
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -22,7 +21,7 @@
 		<li>Copy it into your web_root (or other directory if you really want)</li>
 		<li>Done!</li>
 	</ol>
-	<h3>Instantiating</h3>
+	<h3>Instantiating (ex_1)</h3>
 	<p>Storm is meant to run in the application scope, however you can put it wherever you want. To use it in the application scope:</p>
 	<xmp>
 	<cfset application.storm = createObject('component', 'storm.storm').init('[your data source]', '[custom object path]')>
@@ -33,7 +32,7 @@
 	</ul>
 	<h2>Basic Usage</h2>
 	<h3>Getting Records</h3>
-	<h4>Getting one record</h4>
+	<h4>Getting one record (ex_2)</h4>
 		<p>To get a new record to save later or just to get a new blank record:</p>
 	<xmp>
 	<cfset newThing = application.storm.getOne("[TableName]")>
@@ -46,7 +45,7 @@
 	<cfset user = application.storm.getOne("users")>
 	</xmp>
 	 
-	<h3>Creating a new record:</h3>
+	<h3>Creating a new record: (ex_3)</h3>
 	<p>
 		The important thing to note in this example is how you set properties on the thing you're trying to save. No getter or setter syntax. You can add those with a custom object if you want, which we'll talk about later.
 		You'll notice if you dump out a struct you got from storm, it'll have a _TABLE_ key in it. You guessed it, this is how storm keeps track of where your struct came from and where to save it.
@@ -57,7 +56,7 @@
 	<cfset user.lastName = 'Panda'>
 	<cfset application.storm.save(user)>
 	</xmp>
-	<h3>Update an existing record:</h3>
+	<h3>Update an existing record (ex_4):</h3>
 	<p>
 		This is how to get a record by ID and update it:
 	</p>
@@ -67,7 +66,7 @@
 	<cfset application.storm.save(user)>
 	</xmp>
 	<p>See that 1? That's the primary key for the table. You might ask, how does storm know what my primary key is? By using cfdbinfo storm introspects your database. As long as your primary key is defined on the database table, storm knows what it is.
-	<h2>Advanced Gets</h2>
+	<h2>Advanced Gets (ex_5)</h2>
 	<p>Storm has a pretty robust system for getting things back. By using the getMany() method, you can have pretty strong control over what's returned. By default, these are returned as a query object. </p>
 	<xmp>
 	<!--- Returns all users --->
@@ -100,7 +99,7 @@
 		</ol>
 
 	</p>
-	<h3>Join Queries</h3>
+	<h3>Join Queries (ex_6)</h3>
 	<p>Storm has support for join queries, but the syntax can be a little weird. Here is an example:</p>
 	<xmp>
 	<cfset users = application.storm.getMany(table = 'users', join = ['roleTypes to users'])>
@@ -112,7 +111,7 @@
 	<cfset transactions = application.storm.getMany(table = 'users', join = ['transactions to users', 'transactionType to transactions'])>
 	</xmp>
 
-	<h2>Custom Objects</h2>
+	<h2>Custom Objects (ex_7)</h2>
 	<p>Hey! I thought storm was totally based on structures? WTF are objects doing in here! Well I'll tell you. Objects in storm are built to still function like structures with their syntax (no getters or setters), but sometimes an object just needs to be smarter. You can use storm without them super effectively, but sometimes you'll want to leverage storm objects because they're totally easy and awesome.</p>
 	<p>Easy? But OO is hard! I don't like definig this either! You won't have to! Just one extra config when you initialize storm:</p>
 	<xmp>
@@ -134,7 +133,7 @@
 		<li>Storm will look for objects in that directory, if it doesn't find one, it just returns you a good old struct.</li>
 		<li>You get helper functions!</li>
 	</ol>
-	<h3>Helper functions for objects</h3>
+	<h3>Helper functions for objects (ex_8)</h3>
 	<p>These helper functions help you. duh. Basically they're functions you can run on your object to get things that might be related to that object. Confused? good! here's an example to make it a lot easier to understand. For this i have a users.cfc setup in my object directory i defined above. Now I can do this:</p>
 	<xmp>
 	<cfset user = application.storm.getOne('users', 1)>
@@ -147,7 +146,7 @@
 	<cfset myObject.get[RelatedTableName]()>
 	<cfdump var="#myObject.[RelatedTableName]#">
 	</xmp>
-	<h4>Specifying a return type</h4>
+	<h4>Specifying a return type (ex_9)</h4>
 	<p>By default, storm will return this as a query (even if there's only 1). We can change it to a struct really easy though by passing in a returnType argument:</p>
 	<xmp>
 	<cfset user = application.storm.getOne('users', 1)>
@@ -159,7 +158,7 @@
 	<xmp>
 	<cfset roleTypes = application.storm.getMany(table="roleTypes", returnType="struct")>
 	</xmp>
-	<p>Role types will now either be a single struct, or an array of structs for the user to use.</p>
+	<p>Role types will now be an array of structs for the user to use.</p>
 	<p>As you might of guessed, if you have an object defined for that table, it'll return that instead of a struct. Say we put a roleTypes.cfc in our object directory. This example:</p>
 	<xmp>
 	<cfset user = application.storm.getOne('users', 1)>
@@ -167,7 +166,7 @@
 	<cfdump var="#user.roleTypes#">
 	</xmp>
 	<p>That dump will now either return an array of objects, or a single object. Neat!</p>
-	<h3>Beyond helper functions</h3>
+	<h3>Beyond helper functions (ex_10)</h3>
 	<p>Ok, now we have a custom object. We already get all the awesomeness of helper objects, but what else can we do? Say by default, every time I get a user, i want to get their role types. Simple! just add an init function:</p>
 	<xmp>
 	<cfcomponent extends="storm.stormTableObject">

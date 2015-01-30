@@ -2,7 +2,6 @@
 
 <cfset request.drinks = request.storm.getMany(table="drinks", returnType="struct")>
 
-<!---<cfdump var="#request.drinks#" abort="false" label="request.drinks">--->
 
 <cfloop from="1" to="#arrayLen(request.drinks)#" index="i">
 	<cfloop from="1" to="#arrayLen(request.drinks[i].usersDrinks)#" index="n">
